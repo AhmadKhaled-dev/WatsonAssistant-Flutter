@@ -58,7 +58,6 @@ class _SpeechScreenState extends State<SpeechScreen> {
         child: FloatingActionButton(
           onPressed: (){
            _listen();
-          assistant(_text);
           },
           child: Icon(_isListening ? Icons.mic : Icons.mic_none),
         ),
@@ -76,13 +75,12 @@ class _SpeechScreenState extends State<SpeechScreen> {
               fontWeight: FontWeight.w400,
             ),
           ),
-          
         ),
       ),
     );
   }
 
-  void _listen() async {
+  Future _listen() async {
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) => print('onStatus: $val'),
@@ -97,12 +95,13 @@ class _SpeechScreenState extends State<SpeechScreen> {
               _confidence = val.confidence;
             }
           }),
-        );
+        ); 
       }
     } else {
       setState(() => _isListening = false);
       _speech.stop();
     }
+   assistant(_text);
   }
 }
 
@@ -122,6 +121,7 @@ void assistant (String text) async{
 
   while(true){
     print("your response:");
+    print(text);
     String question = text;
     
     final dynamic botRes = await bot.sendInput(question, sessionId: sessionId);
