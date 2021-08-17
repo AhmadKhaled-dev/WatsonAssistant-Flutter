@@ -12,6 +12,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  bool isIntialized = false;
+  dynamic bot = '';
+  dynamic sessionId = '';
+  //intializer();
+
   String text = 'Press the button and start speaking ::: NOTE SAY !BYE! TO END CONVO';
   bool isListening = false;
   final FlutterTts flutterTts = FlutterTts();
@@ -66,24 +72,21 @@ class _HomePageState extends State<HomePage> {
       );
       
   void _assistant (text) async{
-    final auth = IbmWatsonAssistantAuth(
-      assistantId: '50eab400-4b27-4690-8c9d-c3cefb5760c5',
-      url: 'https://api.us-south.assistant.watson.cloud.ibm.com/instances/41c945ac-df60-4f99-971d-34eb9197fce8',
-      apikey: 'VYNIBb65AHWyPV4iTueF4Wmo8a6i-1AFJiVFzkaiSyQa',
-    );
 
-
-    final dynamic bot = IbmWatsonAssistant(auth);
-    final sessionId = await bot.createSession();
+    
     ///print(sessionId);
   
     print('your response: $text');
     String question = text;
-
-  
-    final dynamic botRes = await bot.sendInput(question, sessionId: sessionId);
     
-    String response = botRes.responseText;
+    if(!isIntialized){
+      await intializer();
+    }
+    
+    print(sessionId);
+
+    dynamic botRes = await bot.sendInput(question, sessionId: sessionId);
+    String response = await botRes.responseText;
     print(response);
 
     if(text != 'bye'){
@@ -100,5 +103,18 @@ class _HomePageState extends State<HomePage> {
     await flutterTts.awaitSpeakCompletion(true);
     await flutterTts.speak(text);
     
+  }
+
+  Future<void> intializer() async {
+    isIntialized = true;
+    final auth = IbmWatsonAssistantAuth(
+      assistantId: '50eab400-4b27-4690-8c9d-c3cefb5760c5',
+      url: 'https://api.us-south.assistant.watson.cloud.ibm.com/instances/41c945ac-df60-4f99-971d-34eb9197fce8',
+      apikey: 'VYNIBb65AHWyPV4iTueF4Wmo8a6i-1AFJiVFzkaiSyQa',
+    );
+
+
+    bot = IbmWatsonAssistant(auth);
+    sessionId = await bot.createSession();
   }
 }
