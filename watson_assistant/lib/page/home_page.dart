@@ -67,10 +67,11 @@ class _HomePageState extends State<HomePage> {
       
   void _assistant (text) async{
     final auth = IbmWatsonAssistantAuth(
-      assistantId: '2f68dd98-0bf9-4f80-978b-0def32d79cd1',
-      url: 'https://api.eu-de.assistant.watson.cloud.ibm.com/instances/ed320605-9ccf-4e95-b918-b80698dbaedc',
-      apikey: 'dAVIoFt4z2yfWe2zjamBEJimDoAoxoYE_9FQmwwxUh5i',
+      assistantId: '50eab400-4b27-4690-8c9d-c3cefb5760c5',
+      url: 'https://api.us-south.assistant.watson.cloud.ibm.com/instances/41c945ac-df60-4f99-971d-34eb9197fce8',
+      apikey: 'VYNIBb65AHWyPV4iTueF4Wmo8a6i-1AFJiVFzkaiSyQa',
     );
+
 
     final dynamic bot = IbmWatsonAssistant(auth);
     final sessionId = await bot.createSession();
